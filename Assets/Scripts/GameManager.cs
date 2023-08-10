@@ -14,23 +14,58 @@ public class GameManager : MonoBehaviour
 
     public NoteScroller noteScrollerScript;
 
-    public int currentScore;
-    private int normalNote = 100;
-    private int goodNote = 125;
-    private int perfectNote = 150;
+    private int currentScore;
+    private int normalScore = 100;
+    private int goodScore = 125;
+    private int perfectScore = 150;
+    public static int currentMultiplier;
+    private int combo;
+    private int highestCombo;
 
-    public int currentMultiplier = 1;
+    private int perfectHitCount;
+    private int goodHitCount;
+    private int normalHitCount;
+    private int missedHitCount;
 
-    public int combo;
+    private int totalNotes;
 
+    [Header("In-Game text")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI multiplierText;
     public TextMeshProUGUI comboText;
+
+    public TextMeshProUGUI perfectHitText;
+    public TextMeshProUGUI goodHitText;
+    public TextMeshProUGUI normalHitText;
+    public TextMeshProUGUI missedText;
+
+    [Header("Result Text")]
+    public GameObject resultScreen;
+
+    public TextMeshProUGUI perfectHitCounterText;
+    public TextMeshProUGUI goodHitCounterText;
+    public TextMeshProUGUI normalHitCounterText;
+    public TextMeshProUGUI missedHitCounterText;
+    public TextMeshProUGUI highestComboCounterText;
+    public TextMeshProUGUI finalScoreText;
+    public TextMeshProUGUI rankText;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+
+        currentScore = 1;
+        currentMultiplier = 1;
+        combo = 0;
+        highestCombo = 0;
+
+        perfectHitCount = 0;
+        goodHitCount = 0;
+        normalHitCount = 0;
+        missedHitCount = 0;
+
+        totalNotes = FindObjectsOfType<NoteObject>().Length;
     }
 
     // Update is called once per frame
@@ -44,6 +79,48 @@ public class GameManager : MonoBehaviour
                 noteScrollerScript.hasStarted = true;
 
                 BGM.Play();
+            }
+        }
+        else
+        {
+            if (!BGM.isPlaying && !resultScreen.activeInHierarchy)
+            {
+                resultScreen.SetActive(true);
+
+                perfectHitCounterText.text = perfectHitCount.ToString();
+                goodHitCounterText.text = goodHitCount.ToString();
+                normalHitCounterText.text = normalHitCount.ToString();
+                missedHitCounterText.text = missedHitCount.ToString();
+                highestComboCounterText.text = highestCombo.ToString();
+                finalScoreText.text = currentScore.ToString();
+
+                float totalHit = perfectHitCount + goodHitCount + normalHitCount;
+                float percentage = (totalHit / totalNotes) * 100f;
+
+                string rank = "F";
+
+                if(percentage >= 40)
+                {
+                    rank = "D";
+                    if(percentage >= 50)
+                    {
+                        rank = "C";
+                        if(percentage >= 60)
+                        {
+                            rank = "B";
+                            if(percentage >= 80)
+                            {
+                                rank = "A";
+                                if(percentage >= 95)
+                                {
+                                    rank = "S";
+                                }
+                            }
+                        }
+                    }
+                }
+
+                rankText.text = rank;
             }
         }
     }
@@ -66,35 +143,52 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if(combo > highestCombo)
+        {
+            highestCombo = combo;
+        }
+
         scoreText.text = currentScore.ToString();
         multiplierText.text = "x" + currentMultiplier;
         comboText.text = "Combo:\n" + combo;
+
+        perfectHitText.text = "Perfect Hit: " + perfectHitCount;
+        goodHitText.text = "Good Hit: " + goodHitCount;
+        normalHitText.text = "Normal Hit: " + normalHitCount;
     }
 
     public void MissedNote()
     {
         combo = 0;
         currentMultiplier = 1;
+        missedHitCount++;
 
         multiplierText.text = "x" + currentMultiplier;
         comboText.text = "Combo:\n" + combo;
+        missedText.text = "Missed: " + missedHitCount;
     }
 
     public void NormalHit()
     {
-        currentScore += normalNote * currentMultiplier;
+        currentScore += normalScore * currentMultiplier;
+        normalHitCount++;
+
         NoteHit();
     }
 
     public void GoodHit()
     {
-        currentScore += goodNote * currentMultiplier;
+        currentScore += goodScore * currentMultiplier;
+        goodHitCount++;
+
         NoteHit();
     }
 
     public void PerfectHit()
     {
-        currentScore += perfectNote * currentMultiplier;
+        currentScore += perfectScore * currentMultiplier;
+        perfectHitCount++;
+
         NoteHit();
     }
 

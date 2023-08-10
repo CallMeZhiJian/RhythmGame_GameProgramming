@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NoteObject : MonoBehaviour
 {
+    public GameObject EffectOnDestroy;
     public bool canBePressed;
     private SpriteRenderer sr;
     private ParticleSystem effects;
@@ -12,12 +13,15 @@ public class NoteObject : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         effects = GetComponentInChildren<ParticleSystem>();
+
+        var main = effects.main;
+        main.startColor = sr.color;
     }
 
     void Update()
     {
-        var main = effects.main;
-        main.startColor = sr.color;
+        var main1 = EffectOnDestroy.GetComponent<ParticleSystem>().main;
+        main1.startColor = sr.color;
 
         if (PlayerController.isPressed)
         {
@@ -36,6 +40,7 @@ public class NoteObject : MonoBehaviour
                     GameManager.instance.PerfectHit();
                 }
 
+                Instantiate(EffectOnDestroy, transform.position, Quaternion.identity);
                 Destroy(gameObject);
                 
             }

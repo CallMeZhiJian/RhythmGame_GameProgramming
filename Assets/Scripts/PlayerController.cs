@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public Transform maxBorderX;
 
     private SpriteRenderer playerSR;
+    private Color defaultColor;
+    private Color pressedColor;
 
     public KeyCode KeyBinding;
     public static bool isPressed;
@@ -17,6 +19,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerSR = GetComponent<SpriteRenderer>();
+        defaultColor = playerSR.color;
+        pressedColor = Color.black;
     }
 
     void Update()
@@ -29,14 +33,29 @@ public class PlayerController : MonoBehaviour
         //Button pressed
         if (Input.GetKeyDown(KeyBinding))
         {
-            playerSR.color = Color.gray;
-            isPressed = true;
+            //playerSR.color = pressedColor;
+            //isPressed = true;
+            StartCoroutine(PressDelay());
         }
 
-        if (Input.GetKeyUp(KeyBinding))
-        {
-            playerSR.color = Color.white;
-            isPressed = false;
-        }
+        //if (Input.GetKeyUp(KeyBinding))
+        //{
+        //    playerSR.color = defaultColor;
+        //    isPressed = false;
+        //}
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        pressedColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
+    }
+
+    IEnumerator PressDelay()
+    {
+        playerSR.color = pressedColor;
+        isPressed = true;
+        yield return new WaitForSeconds(0.1f);
+        playerSR.color = defaultColor;
+        isPressed = false;
     }
 }

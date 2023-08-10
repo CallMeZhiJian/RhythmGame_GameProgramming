@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.8
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -662,7 +662,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 8
+    angle: 0
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -920,7 +920,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 10
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4825,6 +4825,7 @@ GameObject:
   - component: {fileID: 647530752615893800}
   - component: {fileID: 3179088762051941441}
   - component: {fileID: 8405135460342246743}
+  - component: {fileID: -8681720673320054214}
   m_Layer: 0
   m_Name: Notes
   m_TagString: Note
@@ -4929,7 +4930,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b37cfc4586e37468bb316b2169a26b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EffectOnDestroy: {fileID: 2473727359634945076, guid: 97a5a5f5c9301d64a8c01654c7369645, type: 3}
   canBePressed: 0
+--- !u!50 &-8681720673320054214
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267063190675105432}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &8551427510109885477
 GameObject:
   m_ObjectHideFlags: 0
