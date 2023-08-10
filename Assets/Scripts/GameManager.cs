@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public AudioSource BGM;
+    public AudioSource MusicSource;
+    public AudioClip[] MusicClip;
 
     public bool startPlaying;
 
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
     private int missedHitCount;
 
     private int totalNotes;
+    private float audioSpeed;
 
     [Header("In-Game text")]
     public TextMeshProUGUI scoreText;
@@ -66,6 +68,7 @@ public class GameManager : MonoBehaviour
         missedHitCount = 0;
 
         totalNotes = FindObjectsOfType<NoteObject>().Length;
+        noteScrollerScript = FindObjectOfType<NoteScroller>();
     }
 
     // Update is called once per frame
@@ -78,12 +81,12 @@ public class GameManager : MonoBehaviour
                 startPlaying = true;
                 noteScrollerScript.hasStarted = true;
 
-                BGM.Play();
+                MusicSource.Play();
             }
         }
         else
         {
-            if (!BGM.isPlaying && !resultScreen.activeInHierarchy)
+            if (!MusicSource.isPlaying && !resultScreen.activeInHierarchy)
             {
                 resultScreen.SetActive(true);
 
@@ -123,6 +126,29 @@ public class GameManager : MonoBehaviour
                 rankText.text = rank;
             }
         }
+
+        switch (currentMultiplier)
+        {
+            case 2:
+                Time.timeScale = 1.5f;
+                audioSpeed = 1.5f;
+                break;
+            case 3:
+                Time.timeScale = 2f;
+                audioSpeed = 2f;
+                break;
+            case 4:
+                Time.timeScale = 3f;
+                audioSpeed = 3f;
+                break;
+            default:
+                Time.timeScale = 1;
+                audioSpeed = 1;
+                break;
+        }
+
+        MusicSource.pitch = audioSpeed;
+        //MusicSource.outputAudioMixerGroup.audioMixer.SetFloat("Pitch", 1f / audioSpeed);
     }
 
     public void NoteHit()
@@ -133,10 +159,10 @@ public class GameManager : MonoBehaviour
         if (combo >= 10)
         {
             currentMultiplier = 2;
-            if(combo>= 20)
+            if(combo>= 30)
             {
                 currentMultiplier = 3;
-                if(combo >= 30)
+                if(combo >= 50)
                 {
                     currentMultiplier = 4;
                 }
