@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class NoteObject : MonoBehaviour
 {
     public GameObject EffectOnDestroy;
     public bool canBePressed;
     private SpriteRenderer sr;
+    private Light2D L2D;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        L2D = GetComponentInChildren<Light2D>();
+        L2D.color = sr.color;
     }
 
     void Update()

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     private int normalScore = 100;
     private int goodScore = 125;
     private int perfectScore = 150;
-    public static int currentMultiplier;
+    private int currentMultiplier;
     private int combo;
     private int highestCombo;
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     private int missedHitCount;
 
     private int totalNotes;
-    private float audioSpeed;
+    public static float audioSpeed;
 
     [Header("In-Game text")]
     public TextMeshProUGUI scoreText;
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
         {
             if (!MusicSource.isPlaying && !resultScreen.activeInHierarchy)
             {
-                resultScreen.SetActive(true);
+                StartCoroutine(SetTrueDelay());
 
                 perfectHitCounterText.text = perfectHitCount.ToString();
                 goodHitCounterText.text = goodHitCount.ToString();
@@ -130,19 +130,15 @@ public class GameManager : MonoBehaviour
         switch (currentMultiplier)
         {
             case 2:
-                Time.timeScale = 1.5f;
                 audioSpeed = 1.5f;
                 break;
             case 3:
-                Time.timeScale = 2f;
                 audioSpeed = 2f;
                 break;
             case 4:
-                Time.timeScale = 3f;
                 audioSpeed = 3f;
                 break;
             default:
-                Time.timeScale = 1;
                 audioSpeed = 1;
                 break;
         }
@@ -222,5 +218,11 @@ public class GameManager : MonoBehaviour
     {
         Destroy(collision.gameObject);
         MissedNote();
+    }
+
+    IEnumerator SetTrueDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        resultScreen.SetActive(true);
     }
 }

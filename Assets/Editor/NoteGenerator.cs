@@ -114,6 +114,8 @@ public class NoteGenerator : EditorWindow
 
         _audioSource = MusicSource.GetComponent<AudioSource>();
 
+        _audioSource.enabled = true;
+
         _audioSource.GetSpectrumData(_samples, 0, FFTWindow.Blackman);
 
 
