@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public AudioSource MusicSource;
-    public AudioClip[] MusicClip;
+    //public AudioClip[] MusicClip;
 
     public bool startPlaying;
 
@@ -222,6 +222,5 @@ public class GameManager : MonoBehaviour
     {
         Destroy(collision.gameObject);
         MissedNote();
-
     }
 }
