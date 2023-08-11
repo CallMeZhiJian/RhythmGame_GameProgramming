@@ -110,9 +110,12 @@ public class NoteGenerator : EditorWindow
         if(MusicSource == null)
         {
             Debug.Log("No Audio Source Given");
+            return;
         }
 
         _audioSource = MusicSource.GetComponent<AudioSource>();
+
+        _audioSource.enabled = true;
 
         _audioSource.GetSpectrumData(_samples, 0, FFTWindow.Blackman);
 
