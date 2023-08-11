@@ -110,6 +110,7 @@ public class NoteGenerator : EditorWindow
         if(MusicSource == null)
         {
             Debug.Log("No Audio Source Given");
+            return;
         }
 
         _audioSource = MusicSource.GetComponent<AudioSource>();
