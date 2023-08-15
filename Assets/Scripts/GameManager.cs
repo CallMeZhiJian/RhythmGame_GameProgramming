@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
     public AudioSource MusicSource;
-    //public AudioClip[] MusicClip;
 
     public bool startPlaying;
 
@@ -259,5 +258,10 @@ public class GameManager : MonoBehaviour
     {
         cineCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
         timer = 0f;
+    }
+
+    public void Replay()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }

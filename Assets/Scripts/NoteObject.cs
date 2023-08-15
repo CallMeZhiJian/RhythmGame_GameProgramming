@@ -8,13 +8,10 @@ public class NoteObject : MonoBehaviour
     public GameObject EffectOnDestroy;
     public bool canBePressed;
     private SpriteRenderer sr;
-    private Light2D L2D;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        L2D = GetComponentInChildren<Light2D>();
-        L2D.color = sr.color;
     }
 
     void Update()
@@ -29,21 +26,21 @@ public class NoteObject : MonoBehaviour
                 if(Mathf.Abs(transform.position.y) > 0.25)
                 {
                     GameManager.instance.NormalHit();
-                    GameManager.instance.ShakeCamera(0.5f);
+                    GameManager.instance.ShakeCamera(0.25f);
                 }
                 else if(Mathf.Abs(transform.position.y) > 0.05)
                 {
                     GameManager.instance.GoodHit();
-                    GameManager.instance.ShakeCamera(1f);
+                    GameManager.instance.ShakeCamera(0.5f);
                 }
                 else
                 {
                     GameManager.instance.PerfectHit();
-                    GameManager.instance.ShakeCamera(2f);
+                    GameManager.instance.ShakeCamera(1f);
                 }
 
                 GameObject effects = Instantiate(EffectOnDestroy, transform.position, Quaternion.identity);
-                Destroy(effects, 1f);
+                Destroy(effects, 2f);
                 Destroy(gameObject);
                 
             }
