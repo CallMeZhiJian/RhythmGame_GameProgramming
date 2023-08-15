@@ -12,11 +12,13 @@ public class NoteGenerator : EditorWindow
 
     GameObject MusicSource;
     float BPM;
+    float AudioLength;
 
     AudioSource _audioSource;
 
     float Distance = 2f;
-    float lastPosY = 0;
+    float NotePosY = 0;
+    float LinePosY = 0;
 
     private const float resetVal = 0f;
     Vector2 scrollPos = Vector2.zero;
@@ -61,6 +63,7 @@ public class NoteGenerator : EditorWindow
 
         MusicSource = EditorGUILayout.ObjectField("Music Source", MusicSource, typeof(GameObject), false) as GameObject;
         BPM = EditorGUILayout.FloatField("BPM", BPM);
+        AudioLength = EditorGUILayout.FloatField("Clip Length", AudioLength);
 
         if(GUILayout.Button("Genrate Audio Samples"))
         {
@@ -68,7 +71,8 @@ public class NoteGenerator : EditorWindow
         }
 
         Distance = EditorGUILayout.FloatField("Distance Between Notes", Distance);
-        lastPosY = EditorGUILayout.FloatField("Last Note Position Y", lastPosY);
+        NotePosY = EditorGUILayout.FloatField("Last Note Position Y", NotePosY);
+        LinePosY = EditorGUILayout.FloatField("Last Line Position Y", LinePosY);
 
         if (GUILayout.Button("Reset"))
         {
@@ -92,8 +96,8 @@ public class NoteGenerator : EditorWindow
         }
 
         //float _elapsedTime = _audioSource.timeSamples / (_audioSource.clip.frequency * beatPerSec);
-
-        lastPosY += Distance;
+        Distance = BPM / 60f;
+        NotePosY += Distance;
 
         float minX = minBorderX.transform.position.x;
         float maxX = maxBorderX.transform.position.x;
@@ -103,19 +107,20 @@ public class NoteGenerator : EditorWindow
 
         for (int i = 0; i < _audioSource.clip.length; i++)
         {
-            Vector3 SpawnPos = new Vector3(Random.Range(minX, maxX), lastPosY, 0f);
+            Vector3 SpawnPos = new Vector3(Random.Range(minX, maxX), NotePosY, 0f);
 
             GameObject NewNote = Instantiate(NoteToCreate, SpawnPos, Quaternion.identity, NewParent.transform);
 
             NewNote.GetComponent<SpriteRenderer>().color = Random.ColorHSV();
 
-            lastPosY += Distance;
+            NotePosY += Distance;
         }
     }
 
     private void Reset()
     {
-        lastPosY = resetVal;
+        NotePosY = resetVal;
+        LinePosY = resetVal;
     }
 
     void GetSpectrumSamples()
@@ -128,25 +133,28 @@ public class NoteGenerator : EditorWindow
 
         _audioSource = MusicSource.GetComponent<AudioSource>();
 
+        AudioLength = _audioSource.clip.length;
+
         beatPerSec = 60f / BPM;
     }
 
     void GenerateBeatLine()
     {
-        float yPos = 0;
-        float audioLength = _audioSource.clip.length;
-
         GameObject NewParent = Instantiate(ParentObject, ParentObject.transform.position, Quaternion.identity);
         NewParent.name = ParentName;
 
-        while (audioLength != 0)
+        for (int i = 0; i < AudioLength; i++)
         {
-            Vector3 SpawnPos = new Vector3(0f, yPos, 0);
+            Vector3 SpawnPos = new Vector3(0f, LinePosY, 0);
 
-            Instantiate(beatLine, SpawnPos, Quaternion.identity, NewParent.transform);
+            GameObject NewLine = Instantiate(beatLine, SpawnPos, Quaternion.identity, NewParent.transform);
 
-            audioLength -= beatPerSec;
-            yPos += beatPerSec;
+            if(i % 4 == 0)
+            {
+                NewLine.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 145);
+            }
+            
+            LinePosY += Distance;
         }
     }
 }
