@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 public class NoteGenerator : EditorWindow
 {
+    GameObject beatLine;
+
     string ParentName;
     GameObject ParentObject;
     GameObject NoteToCreate;
@@ -9,16 +11,17 @@ public class NoteGenerator : EditorWindow
     GameObject maxBorderX;
 
     GameObject MusicSource;
+    float BPM;
+
     AudioSource _audioSource;
-    public float[] _samples = new float[512];
-    float[] _freqBand = new float[8];
 
     float Distance = 2f;
-
-    private const float resetVal = 0f;
     float lastPosY = 0;
 
+    private const float resetVal = 0f;
     Vector2 scrollPos = Vector2.zero;
+
+    private float beatPerSec;
 
     [MenuItem("Tools/Note Generator")]
     public static void ShowWindow()
@@ -29,6 +32,15 @@ public class NoteGenerator : EditorWindow
     private void OnGUI()
     {
         scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.Height(1000));
+
+        GUILayout.Label("Creating Beat Lines", EditorStyles.boldLabel);
+
+        beatLine = EditorGUILayout.ObjectField("BeatLine Object", beatLine, typeof(GameObject), false) as GameObject;
+
+        if(GUILayout.Button("Generate Lines"))
+        {
+            GenerateBeatLine();
+        }
 
         GUILayout.Label("Creating Notes", EditorStyles.boldLabel);
 
@@ -48,6 +60,7 @@ public class NoteGenerator : EditorWindow
         GUILayout.Label("Audio Samples Generator", EditorStyles.boldLabel);
 
         MusicSource = EditorGUILayout.ObjectField("Music Source", MusicSource, typeof(GameObject), false) as GameObject;
+        BPM = EditorGUILayout.FloatField("BPM", BPM);
 
         if(GUILayout.Button("Genrate Audio Samples"))
         {
@@ -115,10 +128,25 @@ public class NoteGenerator : EditorWindow
 
         _audioSource = MusicSource.GetComponent<AudioSource>();
 
-        _audioSource.enabled = true;
+        beatPerSec = 60f / BPM;
+    }
 
-        _audioSource.GetSpectrumData(_samples, 0, FFTWindow.Blackman);
+    void GenerateBeatLine()
+    {
+        float yPos = 0;
+        float audioLength = _audioSource.clip.length;
 
+        GameObject NewParent = Instantiate(ParentObject, ParentObject.transform.position, Quaternion.identity);
+        NewParent.name = ParentName;
 
+        while (audioLength != 0)
+        {
+            Vector3 SpawnPos = new Vector3(0f, yPos, 0);
+
+            Instantiate(beatLine, SpawnPos, Quaternion.identity, NewParent.transform);
+
+            audioLength -= beatPerSec;
+            yPos += beatPerSec;
+        }
     }
 }

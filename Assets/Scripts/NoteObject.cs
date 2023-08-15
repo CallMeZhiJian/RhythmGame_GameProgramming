@@ -29,14 +29,17 @@ public class NoteObject : MonoBehaviour
                 if(Mathf.Abs(transform.position.y) > 0.25)
                 {
                     GameManager.instance.NormalHit();
+                    GameManager.instance.ShakeCamera(0.5f);
                 }
                 else if(Mathf.Abs(transform.position.y) > 0.05)
                 {
                     GameManager.instance.GoodHit();
+                    GameManager.instance.ShakeCamera(1f);
                 }
                 else
                 {
                     GameManager.instance.PerfectHit();
+                    GameManager.instance.ShakeCamera(2f);
                 }
 
                 GameObject effects = Instantiate(EffectOnDestroy, transform.position, Quaternion.identity);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -52,6 +53,11 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI finalScoreText;
     public TextMeshProUGUI rankText;
 
+    [Header("Camera Setting")]
+    public CinemachineVirtualCamera cineCam;
+    [SerializeField] private float shakeTime;
+    private float timer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,11 +75,23 @@ public class GameManager : MonoBehaviour
 
         totalNotes = FindObjectsOfType<NoteObject>().Length;
         noteScrollerScript = FindObjectOfType<NoteScroller>();
+
+        StopShake();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+
+            if (timer <= 0)
+            {
+                StopShake();
+            }
+        }
+
         if (!startPlaying)
         {
             if (Input.anyKeyDown)
@@ -105,18 +123,23 @@ public class GameManager : MonoBehaviour
                 if(percentage >= 40)
                 {
                     rank = "D";
-                    if(percentage >= 50)
+                    rankText.color = Color.gray;
+                    if (percentage >= 50)
                     {
                         rank = "C";
-                        if(percentage >= 60)
+                        rankText.color = Color.green;
+                        if (percentage >= 60)
                         {
                             rank = "B";
-                            if(percentage >= 80)
+                            rankText.color = Color.blue;
+                            if (percentage >= 80)
                             {
                                 rank = "A";
-                                if(percentage >= 95)
+                                rankText.color = Color.red;
+                                if (percentage >= 95)
                                 {
                                     rank = "S";
+                                    rankText.color = Color.yellow;
                                 }
                             }
                         }
@@ -127,23 +150,23 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        switch (currentMultiplier)
-        {
-            case 2:
-                audioSpeed = 1.5f;
-                break;
-            case 3:
-                audioSpeed = 2f;
-                break;
-            case 4:
-                audioSpeed = 3f;
-                break;
-            default:
-                audioSpeed = 1;
-                break;
-        }
+        //switch (currentMultiplier)
+        //{
+        //    case 2:
+        //        audioSpeed = 1.5f;
+        //        break;
+        //    case 3:
+        //        audioSpeed = 2f;
+        //        break;
+        //    case 4:
+        //        audioSpeed = 3f;
+        //        break;
+        //    default:
+        //        audioSpeed = 1;
+        //        break;
+        //}
 
-        MusicSource.pitch = audioSpeed;
+        //MusicSource.pitch = audioSpeed;
         //MusicSource.outputAudioMixerGroup.audioMixer.SetFloat("Pitch", 1f / audioSpeed);
     }
 
@@ -224,5 +247,17 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         resultScreen.SetActive(true);
+    }
+
+    public void ShakeCamera(float amplitute)
+    {
+        cineCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = amplitute;
+        timer = shakeTime;
+    }
+
+    public void StopShake()
+    {
+        cineCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
+        timer = 0f;
     }
 }
