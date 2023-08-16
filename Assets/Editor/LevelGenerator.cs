@@ -1,22 +1,24 @@
 using UnityEngine;
 using UnityEditor;
-public class NoteGenerator : EditorWindow
+public class LevelGenerator : EditorWindow
 {
+    string ParentName = "Holder";
+    GameObject ParentObject;
+
+    float minBorderX = -3;
+    float maxBorderX = 3;
+
     GameObject beatLine;
 
-    string ParentName;
-    GameObject ParentObject;
     GameObject NoteToCreate;
-    GameObject minBorderX;
-    GameObject maxBorderX;
+    
 
     GameObject MusicSource;
+    AudioSource _audioSource;
     float BPM;
     float AudioLength;
 
-    AudioSource _audioSource;
-
-    float Distance = 2f;
+    float Distance = 0;
     float NotePosY = 0;
     float LinePosY = 0;
 
@@ -25,15 +27,39 @@ public class NoteGenerator : EditorWindow
 
     private float beatPerSec;
 
-    [MenuItem("Tools/Note Generator")]
+    [MenuItem("Tools/Level Generator")]
     public static void ShowWindow()
     {
-        GetWindow(typeof(NoteGenerator));
+        GetWindow(typeof(LevelGenerator));
     }
 
     private void OnGUI()
     {
         scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.Height(1000));
+
+        GUILayout.Label("Parent Object Information", EditorStyles.boldLabel);
+
+        ParentName = EditorGUILayout.TextField("Parent Name", ParentName);
+        ParentObject = EditorGUILayout.ObjectField("Parent Object", ParentObject, typeof(GameObject), false) as GameObject;
+
+        minBorderX = EditorGUILayout.FloatField("Min Border X", minBorderX);
+        maxBorderX = EditorGUILayout.FloatField("Max Border X", maxBorderX);
+
+
+        GUILayout.Space(25f);
+
+
+        GUILayout.Label("Audio Samples Generator", EditorStyles.boldLabel);
+
+        MusicSource = EditorGUILayout.ObjectField("Music Source", MusicSource, typeof(GameObject), false) as GameObject;
+        BPM = EditorGUILayout.FloatField("BPM", BPM);
+        AudioLength = EditorGUILayout.FloatField("Clip Length", AudioLength);
+
+        if (GUILayout.Button("Genrate Audio Samples"))
+        {
+            GetSpectrumSamples();
+        }
+
 
         GUILayout.Label("Creating Beat Lines", EditorStyles.boldLabel);
 
@@ -44,31 +70,16 @@ public class NoteGenerator : EditorWindow
             GenerateBeatLine();
         }
 
+
         GUILayout.Label("Creating Notes", EditorStyles.boldLabel);
 
-        ParentName = EditorGUILayout.TextField("Parent Name", ParentName);
-
-        ParentObject = EditorGUILayout.ObjectField("Parent Object", ParentObject, typeof(GameObject), false) as GameObject;
         NoteToCreate = EditorGUILayout.ObjectField("Note To Create", NoteToCreate, typeof(GameObject), false) as GameObject;
-
-        minBorderX = EditorGUILayout.ObjectField("Left Border", minBorderX, typeof(GameObject), false) as GameObject;
-        maxBorderX = EditorGUILayout.ObjectField("Right Border", maxBorderX, typeof(GameObject), false) as GameObject;
 
         if (GUILayout.Button("Generate Note"))
         {
             SpawnObject();
         }
 
-        GUILayout.Label("Audio Samples Generator", EditorStyles.boldLabel);
-
-        MusicSource = EditorGUILayout.ObjectField("Music Source", MusicSource, typeof(GameObject), false) as GameObject;
-        BPM = EditorGUILayout.FloatField("BPM", BPM);
-        AudioLength = EditorGUILayout.FloatField("Clip Length", AudioLength);
-
-        if(GUILayout.Button("Genrate Audio Samples"))
-        {
-            GetSpectrumSamples();
-        }
 
         Distance = EditorGUILayout.FloatField("Distance Between Notes", Distance);
         NotePosY = EditorGUILayout.FloatField("Last Note Position Y", NotePosY);
@@ -95,19 +106,14 @@ public class NoteGenerator : EditorWindow
             return;
         }
 
-        //float _elapsedTime = _audioSource.timeSamples / (_audioSource.clip.frequency * beatPerSec);
-        Distance = BPM / 60f;
         NotePosY += Distance;
 
-        float minX = minBorderX.transform.position.x;
-        float maxX = maxBorderX.transform.position.x;
-
         GameObject NewParent = Instantiate(ParentObject, ParentObject.transform.position, Quaternion.identity);
-        NewParent.name = ParentName;
+        NewParent.name = "Notes" + ParentName;
 
         for (int i = 0; i < _audioSource.clip.length; i++)
         {
-            Vector3 SpawnPos = new Vector3(Random.Range(minX, maxX), NotePosY, 0f);
+            Vector3 SpawnPos = new Vector3(Random.Range(minBorderX, maxBorderX), NotePosY, 0f);
 
             GameObject NewNote = Instantiate(NoteToCreate, SpawnPos, Quaternion.identity, NewParent.transform);
 
@@ -121,6 +127,8 @@ public class NoteGenerator : EditorWindow
     {
         NotePosY = resetVal;
         LinePosY = resetVal;
+        AudioLength = resetVal;
+        Distance = resetVal;
     }
 
     void GetSpectrumSamples()
@@ -131,17 +139,29 @@ public class NoteGenerator : EditorWindow
             return;
         }
 
+        if(BPM == 0)
+        {
+            Debug.Log("BPM not filled");
+            return;
+        }
+
         _audioSource = MusicSource.GetComponent<AudioSource>();
 
         AudioLength = _audioSource.clip.length;
 
-        beatPerSec = 60f / BPM;
+        Distance = BPM / 60f;
     }
 
     void GenerateBeatLine()
     {
+        if(AudioLength == 0)
+        {
+            Debug.Log("Audio Clip is not read");
+            return;
+        }
+
         GameObject NewParent = Instantiate(ParentObject, ParentObject.transform.position, Quaternion.identity);
-        NewParent.name = ParentName;
+        NewParent.name = "Lines" + ParentName;
 
         for (int i = 0; i < AudioLength; i++)
         {
