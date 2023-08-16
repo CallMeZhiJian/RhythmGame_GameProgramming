@@ -10,9 +10,8 @@ public class HoverOverObject : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private Animator albumAnim;
     public static bool onHover;
 
-    public GameObject ChooseMusicText;
-    public GameObject HoverLockText;
-    public GameObject ClickLockText;
+    public GameObject HoverText;
+    public GameObject ClickText;
 
     public AudioClip _musicClip;
 
@@ -41,14 +40,15 @@ public class HoverOverObject : MonoBehaviour, IPointerEnterHandler, IPointerExit
         albumAnim.SetBool("isHovering", true);
         onHover = true;
         SettingManager.instance.OnHoverMusic(_musicClip);
+        HoverText.SetActive(true);
 
         if (unlock)
         {
-            ChooseMusicText.SetActive(true);
+            HoverText.GetComponent<TextMeshProUGUI>().text = "Click To Choose";
         }
         else
         {
-            HoverLockText.SetActive(true);
+            HoverText.GetComponent<TextMeshProUGUI>().text = "Music is unavailable (To be Unlock)";
         }
     }
 
@@ -57,15 +57,13 @@ public class HoverOverObject : MonoBehaviour, IPointerEnterHandler, IPointerExit
         albumAnim.SetBool("isHovering", false);
         onHover = false;
         SettingManager.instance.OnHoverMusic(_musicClip);
-        if (unlock)
+        HoverText.SetActive(false);
+
+        if (!unlock)
         {
-            ChooseMusicText.SetActive(false);
+            ClickText.SetActive(false);
         }
-        else
-        {
-            HoverLockText.SetActive(false);
-            ClickLockText.SetActive(false);
-        }
+        
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -73,12 +71,13 @@ public class HoverOverObject : MonoBehaviour, IPointerEnterHandler, IPointerExit
         if (unlock)
         {
             SettingManager._currentClip = _musicClip;
-            ChooseMusicText.SetActive(false);
+            HoverText.SetActive(false);
+
             SceneManager.LoadScene("GameScene");
         }
         else
         {
-            ClickLockText.SetActive(true);
+            ClickText.SetActive(true);
             return;
         }
 

@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pauseScreen;
     private GameObject SettingScreen;
     public static bool onPause = false;
+    private bool isStart = false;
+
+    [SerializeField] private GameObject Counter;
+    public static bool isCounted = false;
+    private bool counterStarted = false;
 
     private int currentScore;
     private int normalScore = 100;
@@ -106,10 +111,25 @@ public class GameManager : MonoBehaviour
             if (Input.anyKeyDown)
             {
                 startScene.SetActive(false);
-                startPlaying = true;
-                noteScrollerScript.hasStarted = true;
+                isStart = true;
+            }
 
-                MusicSource.Play();
+            if (isStart)
+            {
+                if (isCounted)
+                {
+                    startPlaying = true;
+                    noteScrollerScript.hasStarted = true;
+
+                    MusicSource.Play();
+                }
+                else
+                {
+                    if (!counterStarted)
+                    {
+                        StartCoroutine(CountDown());
+                    }
+                }
             }
         }
         else
@@ -130,7 +150,7 @@ public class GameManager : MonoBehaviour
 
                 string rank = "F";
 
-                if(percentage >= 40)
+                if (percentage >= 40)
                 {
                     rank = "D";
                     rankText.color = Color.gray;
@@ -278,13 +298,12 @@ public class GameManager : MonoBehaviour
 
     public void Replay()
     {
-        SceneManager.LoadScene("GameScene");
-        
+        SceneManager.LoadScene("GameScene");    
     }
 
     public void PauseResumeGame()
     {
-        if(pauseScreen.activeInHierarchy)
+        if (pauseScreen.activeInHierarchy)
         {
             pauseScreen.SetActive(false);
             Time.timeScale = 1;
@@ -308,5 +327,23 @@ public class GameManager : MonoBehaviour
     public void BackToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    IEnumerator CountDown()
+    {
+        Counter.SetActive(true);
+        counterStarted = true;
+
+        Counter.GetComponent<TextMeshProUGUI>().text = "3";
+        yield return new WaitForSeconds(1);
+        Counter.GetComponent<TextMeshProUGUI>().text = "2";
+        yield return new WaitForSeconds(1);
+        Counter.GetComponent<TextMeshProUGUI>().text = "1";
+        yield return new WaitForSeconds(1);
+        Counter.GetComponent<TextMeshProUGUI>().text = "START";
+        yield return new WaitForSeconds(1f);
+
+        Counter.SetActive(false);
+        isCounted = true;
     }
 }

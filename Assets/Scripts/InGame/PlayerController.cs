@@ -38,7 +38,6 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(PressDelay());
             }
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

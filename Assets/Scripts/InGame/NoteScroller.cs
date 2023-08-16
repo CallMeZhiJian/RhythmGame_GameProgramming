@@ -15,16 +15,16 @@ public class NoteScroller : MonoBehaviour
 
     void Update()
     {
-        if (!hasStarted)
+        if (GameManager.isCounted)
         {
-            if (Input.anyKeyDown)
+            if (!hasStarted)
             {
                 hasStarted = true;
             }
-        }
-        else
-        {
-            transform.position -= new Vector3(0f, beatTempo * Time.deltaTime, 0f);
-        }
+            else
+            {
+                transform.position -= new Vector3(0f, beatTempo * Time.deltaTime, 0f);
+            }
+        }    
     }
 }
