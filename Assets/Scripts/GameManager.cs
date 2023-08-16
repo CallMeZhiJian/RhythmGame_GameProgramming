@@ -11,9 +11,14 @@ public class GameManager : MonoBehaviour
 
     public AudioSource MusicSource;
 
-    public bool startPlaying;
+    public static bool startPlaying;
 
     public NoteScroller noteScrollerScript;
+
+    [SerializeField] private GameObject startScene;
+    [SerializeField] private GameObject pauseScreen;
+    private GameObject SettingScreen;
+    public static bool onPause = false;
 
     private int currentScore;
     private int normalScore = 100;
@@ -74,6 +79,7 @@ public class GameManager : MonoBehaviour
 
         totalNotes = FindObjectsOfType<NoteObject>().Length;
         noteScrollerScript = FindObjectOfType<NoteScroller>();
+        SettingScreen = GameObject.Find("SettingScreen");
 
         StopShake();
     }
@@ -95,6 +101,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
+                startScene.SetActive(false);
                 startPlaying = true;
                 noteScrollerScript.hasStarted = true;
 
@@ -103,7 +110,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (!MusicSource.isPlaying && !resultScreen.activeInHierarchy)
+            if (!MusicSource.isPlaying && !resultScreen.activeInHierarchy && FindObjectsOfType<NoteObject>().Length == 0)
             {
                 StartCoroutine(SetTrueDelay());
 
@@ -167,6 +174,11 @@ public class GameManager : MonoBehaviour
 
         //MusicSource.pitch = audioSpeed;
         //MusicSource.outputAudioMixerGroup.audioMixer.SetFloat("Pitch", 1f / audioSpeed);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseResumeGame();
+        }
     }
 
     public void NoteHit()
@@ -263,5 +275,33 @@ public class GameManager : MonoBehaviour
     public void Replay()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void PauseResumeGame()
+    {
+        if(pauseScreen.activeInHierarchy)
+        {
+            pauseScreen.SetActive(false);
+            Time.timeScale = 1;
+            MusicSource.UnPause();
+            onPause = false;
+        }
+        else
+        {
+            pauseScreen.SetActive(true);
+            Time.timeScale = 0;
+            MusicSource.Pause();
+            onPause = true;
+        }
+    }
+
+    public void OnSetting()
+    {
+        SettingScreen.GetComponent<Animator>().SetBool("isOpen", false);
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

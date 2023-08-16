@@ -25,24 +25,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //Button following the mouse cursor in X position
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.x = Mathf.Clamp(mousePos.x, minBorderX.position.x, maxBorderX.position.x);
-        transform.position = new Vector3(mousePos.x, transform.position.y, 0f);
-
-        //Button pressed
-        if (Input.GetKeyDown(KeyBinding))
+        if (!GameManager.onPause && GameManager.startPlaying)
         {
-            //playerSR.color = pressedColor;
-            //isPressed = true;
-            StartCoroutine(PressDelay());
+            //Button following the mouse cursor in X position
+            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.x = Mathf.Clamp(mousePos.x, minBorderX.position.x, maxBorderX.position.x);
+            transform.position = new Vector3(mousePos.x, transform.position.y, 0f);
+
+            //Button pressed
+            if (Input.GetKeyDown(KeyBinding))
+            {
+                StartCoroutine(PressDelay());
+            }
         }
 
-        //if (Input.GetKeyUp(KeyBinding))
-        //{
-        //    playerSR.color = defaultColor;
-        //    isPressed = false;
-        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
