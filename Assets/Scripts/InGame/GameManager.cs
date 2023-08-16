@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         startPlaying = false;
         onPause = false;
+        isCounted = false;
     }
 
     // Update is called once per frame
@@ -280,7 +281,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SetTrueDelay()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         resultScreen.SetActive(true);
     }
 
@@ -298,7 +299,7 @@ public class GameManager : MonoBehaviour
 
     public void Replay()
     {
-        SceneManager.LoadScene("GameScene");    
+        SceneManager.LoadScene("GameScene");
     }
 
     public void PauseResumeGame()

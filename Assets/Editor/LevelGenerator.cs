@@ -111,7 +111,7 @@ public class LevelGenerator : EditorWindow
         GameObject NewParent = Instantiate(ParentObject, ParentObject.transform.position, Quaternion.identity);
         NewParent.name = "Notes" + ParentName;
 
-        for (int i = 0; i < _audioSource.clip.length; i++)
+        for (int i = 0; i < AudioLength; i++)
         {
             Vector3 SpawnPos = new Vector3(Random.Range(minBorderX, maxBorderX), NotePosY, 0f);
 
