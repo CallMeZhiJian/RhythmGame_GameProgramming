@@ -5,21 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    private GameObject SettingScreen;
+    public static GameObject LevelSelectionScreen;
 
     private void Start()
     {
-        SettingScreen = GameObject.Find("SettingScreen");
+        //SettingScreen = GameObject.Find("SettingScreen");
+        LevelSelectionScreen = GameObject.Find("LevelSelectionScreen");
     }
-
     public void StartGame()
     {
-        SceneManager.LoadScene("GameScene");
+        LevelSelectionScreen.GetComponent<Animator>().SetBool("openSelection", true);
+        //SceneManager.LoadScene("GameScene");
     }
 
     public void OnSetting()
     {
-        SettingScreen.GetComponent<Animator>().SetBool("isOpen", false);
+        SettingManager.SettingScreen.GetComponent<Animator>().SetBool("isOpen", false);
     }
 
     public void QuitGame()

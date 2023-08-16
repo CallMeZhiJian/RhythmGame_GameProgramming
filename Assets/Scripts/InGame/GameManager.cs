@@ -82,6 +82,10 @@ public class GameManager : MonoBehaviour
         SettingScreen = GameObject.Find("SettingScreen");
 
         StopShake();
+
+        Time.timeScale = 1;
+        startPlaying = false;
+        onPause = false;
     }
 
     // Update is called once per frame
@@ -275,6 +279,7 @@ public class GameManager : MonoBehaviour
     public void Replay()
     {
         SceneManager.LoadScene("GameScene");
+        
     }
 
     public void PauseResumeGame()
