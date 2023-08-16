@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public static GameObject LevelSelectionScreen;
+    private GameObject LevelSelectionScreen;
 
     private void Start()
     {
@@ -26,5 +26,10 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void BackButton()
+    {
+        LevelSelectionScreen.GetComponent<Animator>().SetBool("openSelection", false);
     }
 }

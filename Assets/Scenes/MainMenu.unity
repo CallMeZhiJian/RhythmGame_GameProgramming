@@ -1007,9 +1007,9 @@ RectTransform:
   - {fileID: 1591201212}
   - {fileID: 1689303114}
   - {fileID: 1269932762}
-  - {fileID: 787916224}
   - {fileID: 1603439861}
   - {fileID: 1176856505}
+  - {fileID: 787916224}
   m_Father: {fileID: 1573407344}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1612,7 +1612,7 @@ RectTransform:
   m_Children:
   - {fileID: 208710428}
   m_Father: {fileID: 367595450}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.42980957, y: 0.087885275}
   m_AnchorMax: {x: 0.56660324, y: 0.2194459}
@@ -1663,8 +1663,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1577616830}
-        m_TargetAssemblyTypeName: SettingManager, Assembly-CSharp
+      - m_Target: {fileID: 1697681779}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
         m_MethodName: BackButton
         m_Mode: 1
         m_Arguments:
@@ -2229,7 +2229,7 @@ RectTransform:
   - {fileID: 669797252}
   - {fileID: 1599702679}
   m_Father: {fileID: 367595450}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.57283485, y: 0.40737158}
   m_AnchorMax: {x: 0.678851, y: 0.59077704}
@@ -2265,7 +2265,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 45b28db14ee536c429bc8b2ff6c7b4ec, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -2769,7 +2769,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 7
+  m_AdditionalShaderChannelsFlag: 31
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -3094,7 +3094,7 @@ RectTransform:
   - {fileID: 1689422951}
   - {fileID: 1945467782}
   m_Father: {fileID: 367595450}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.30347937, y: 0.40737158}
   m_AnchorMax: {x: 0.40752065, y: 0.59077704}
@@ -3113,7 +3113,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 45b28db14ee536c429bc8b2ff6c7b4ec, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -3764,7 +3764,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 1
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0

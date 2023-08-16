@@ -86,15 +86,7 @@ public class SettingManager : MonoBehaviour
 
     public void BackButton()
     {
-        if (SettingScreen.activeInHierarchy)
-        {
-            SettingScreen.GetComponent<Animator>().SetBool("isOpen", true);
-        }
-
-        if (MainMenu.LevelSelectionScreen.activeInHierarchy)
-        {
-            MainMenu.LevelSelectionScreen.GetComponent<Animator>().SetBool("openSelection", false);
-        }
+        SettingScreen.GetComponent<Animator>().SetBool("isOpen", true);
     }
 
     public void OnHoverMusic(AudioClip clip)
