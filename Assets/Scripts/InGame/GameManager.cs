@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
         totalNotes = FindObjectsOfType<NoteObject>().Length;
         noteScrollerScript = FindObjectOfType<NoteScroller>();
         SettingScreen = GameObject.Find("SettingScreen");
+        cineCam = FindObjectOfType<CinemachineVirtualCamera>();
 
         StopShake();
 
