@@ -14,6 +14,7 @@ public class SettingManager : MonoBehaviour
     public static AudioClip _currentClip;
 
     public static GameObject SettingScreen;
+    public static GameObject ControlScreen;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class SettingManager : MonoBehaviour
     private void Start()
     {
         SettingScreen = GameObject.Find("SettingScreen");
+        ControlScreen = GameObject.Find("ControlScreen");
 
         if (!BGMSource.isPlaying)
         {
@@ -101,5 +103,15 @@ public class SettingManager : MonoBehaviour
         {
             _hoverMusicSource.Play();
         }
+    }
+
+    public void OnControlScreen()
+    {
+        ControlScreen.GetComponent<Animator>().SetBool("ControlOpen", true);
+    }
+
+    public void BackButtonControlScreen()
+    {
+        ControlScreen.GetComponent<Animator>().SetBool("ControlOpen", false);
     }
 }
