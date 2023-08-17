@@ -38,7 +38,7 @@ public class LevelGenerator : EditorWindow
 
     private void OnGUI()
     {
-        scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.Height(1000));
+        scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.Height(Screen.height));
 
         GUILayout.Label("Game Scene Objects", EditorStyles.boldLabel);
 
@@ -111,9 +111,19 @@ public class LevelGenerator : EditorWindow
 
     private void GenerateNotes()
     {
-        if(ParentName == string.Empty)
+        if (ParentObject == null)
         {
-            Debug.Log("Object has no name");
+            Debug.Log("Parent Object is Empty");
+            return;
+        }
+        if(NoteToCreate == null)
+        {
+            Debug.Log("Note object is Empty");
+            return;
+        }
+        if (AudioLength == 0)
+        {
+            Debug.Log("Audio Clip is not read");
             return;
         }
 
@@ -163,6 +173,16 @@ public class LevelGenerator : EditorWindow
 
     void GenerateBeatLine()
     {
+        if(ParentObject == null)
+        {
+            Debug.Log("Parent Object is Empty");
+            return;
+        }
+        if(beatLine == null)
+        {
+            Debug.Log("BeatLine Object is Empty");
+            return;
+        }
         if(AudioLength == 0)
         {
             Debug.Log("Audio Clip is not read");
@@ -193,6 +213,15 @@ public class LevelGenerator : EditorWindow
         {
             Debug.Log("Background Image is Empty");
             return;
+        }
+        if(ActivatorSprite == null)
+        {
+            Debug.Log("Activator Image is Empty");
+            return;
+        }
+        if(_GameManager == null)
+        {
+            Debug.Log("Game Manager Object is Empty");
         }
 
         //Creating GameManager
