@@ -300,7 +300,7 @@ public class GameManager : MonoBehaviour
 
     public void Replay()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void PauseResumeGame()
