@@ -310,7 +310,8 @@ public class LevelGenerator : EditorWindow
 
         //Creating Camera
         GameObject _mainCamera = Camera.main.gameObject;
-        if(_mainCamera.GetComponent<CinemachineBrain>() == null)
+
+        if (_mainCamera.GetComponent<CinemachineBrain>() == null)
         {
             _mainCamera.AddComponent<CinemachineBrain>();
         }
@@ -406,6 +407,5 @@ public class LevelGenerator : EditorWindow
         LinePosY = resetVal;
         Interval = resetVal;
         AudioLength = resetVal;
-        BPM = resetVal;
     }
 }

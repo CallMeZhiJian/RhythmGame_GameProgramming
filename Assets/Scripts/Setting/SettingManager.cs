@@ -8,7 +8,7 @@ public class SettingManager : MonoBehaviour
     public static SettingManager instance;
 
     public AudioSource _gameMusicSource;
-    [SerializeField] private AudioSource BGMSource, _effectSource;
+    public AudioSource BGMSource, _effectSource;
     public AudioSource _hoverMusicSource;
 
     public static AudioClip _currentClip;
@@ -34,10 +34,10 @@ public class SettingManager : MonoBehaviour
         SettingScreen = GameObject.Find("SettingScreen");
         ControlScreen = GameObject.Find("ControlScreen");
 
-        if (!BGMSource.isPlaying)
-        {
-            BGMSource.Play();
-        }
+        //if (!BGMSource.isPlaying)
+        //{
+        //    BGMSource.Play();
+        //}
     }
 
     private void Update()
@@ -72,6 +72,11 @@ public class SettingManager : MonoBehaviour
             if (_gameMusicSource != null)
             {
                 _gameMusicSource.clip = _currentClip;
+            }
+
+            if (GameManager.instance.resultScreen.activeInHierarchy)
+            {
+                BGMSource.UnPause();
             }
         }
     }
