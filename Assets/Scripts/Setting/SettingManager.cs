@@ -33,11 +33,6 @@ public class SettingManager : MonoBehaviour
     {
         SettingScreen = GameObject.Find("SettingScreen");
         ControlScreen = GameObject.Find("ControlScreen");
-
-        //if (!BGMSource.isPlaying)
-        //{
-        //    BGMSource.Play();
-        //}
     }
 
     private void Update()

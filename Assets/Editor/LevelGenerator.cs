@@ -1,3 +1,11 @@
+/************************************************************************************
+ *Notes for this tools
+ *- BPM has to find it yourself whether online or physical
+ *- Values for Interval Between Notes, Last Note Position Y, Last Line Position Y
+ *no need to fill in
+ *- The rest need to fill up
+*************************************************************************************/
+
 using UnityEngine;
 using UnityEditor;
 using Cinemachine;
