@@ -17,14 +17,17 @@ public class ParamCube : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_useBuffer)
+        if (GameManager.startPlaying)
         {
-            transform.localScale = new Vector3(transform.localScale.x, (AudioVisualize._audioBandBuffer[_band] * _scaleMultiplier) + _startScale, transform.localScale.z);
-        }
+            if (_useBuffer)
+            {
+                transform.localScale = new Vector3(transform.localScale.x, (AudioVisualize._audioBandBuffer[_band] * _scaleMultiplier) + _startScale, transform.localScale.z);
+            }
 
-        if (!_useBuffer)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, (AudioVisualize._audioBand[_band] * _scaleMultiplier) + _startScale, transform.localScale.z);
-        }
+            if (!_useBuffer)
+            {
+                transform.localScale = new Vector3(transform.localScale.x, (AudioVisualize._audioBand[_band] * _scaleMultiplier) + _startScale, transform.localScale.z);
+            }
+        } 
     }
 }
